@@ -7,6 +7,7 @@ function Login(props) {
     const userID = localStorage.getItem("userID");
     if (userID){
         props.history.push("/profile");
+        window.location.reload();
     }
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -19,6 +20,7 @@ function Login(props) {
         if (loginData.data.login.id){
             localStorage.setItem("userID", loginData.data.login.id);
             props.history.push("/profile");
+            window.location.reload();
         }
     }
 
