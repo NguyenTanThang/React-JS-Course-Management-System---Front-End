@@ -22,11 +22,10 @@ function TopicDetails(props) {
 
     const topicItem = data.getTopicByID;
     const {title, created_date, course, assigned_trainers} = topicItem;
-    console.log(topicItem)
 
     const displayAssignedTrainers = () => {
         if (assigned_trainers.length === 0){
-            return <li key={"LOL2"}>No trainer has been assigned to this course</li>
+            return <li key={"LOL2"}>No trainer has been assigned to this topic</li>
         } else {
             return assigned_trainers.map(trainerItem => {
                 return <li key={trainerItem.id}>{trainerItem.name}</li>

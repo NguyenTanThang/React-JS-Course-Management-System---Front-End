@@ -9,11 +9,11 @@ export const dateParser = (dateItem) => {
     let m = "" + dateObject.getMonth();
     let d = "" + dateObject.getDate();
 
-    if (m.length == 1){
+    if (m.length === 1){
         m = "0" + m;
     }
 
-    if (d.length == 1){
+    if (d.length === 1){
         d = "0" + d;
     }
 
@@ -29,7 +29,7 @@ export const dateParserWithMonth = (dateItem) => {
     let m = mS[dateObject.getMonth()];
     let d = "" + dateObject.getDate();
 
-    if (d.length == 1){
+    if (d.length === 1){
         d = "0" + d;
     }
 
@@ -45,7 +45,7 @@ export const dateParserWithMonth_ISODate = (dateItem) => {
     let m = mS[dateObject.getMonth()];
     let d = "" + dateObject.getDate();
 
-    if (d.length == 1){
+    if (d.length === 1){
         d = "0" + d;
     }
 

@@ -97,7 +97,7 @@ function Profile(props) {
                         <p><b>Participated Courses:</b></p>
                     </div>
                     <div className="col-lg-9 col-md-6 col-sm-6 details-data">
-                        <p>{courseList}</p>
+                        {courseList}
                     </div>
 
                     </div>               
@@ -172,7 +172,7 @@ function Profile(props) {
                             <p><b>Assigned Topics:</b></p>
                         </div>
                         <div className="col-lg-9 col-md-6 col-sm-6 details-data">
-                            <p>{topicList}</p>
+                            {topicList}
                         </div>
 
                     </div>               

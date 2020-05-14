@@ -2,6 +2,7 @@ import React from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import client from "./config/client";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import MessageContextProvider from "./context/MessageContext";
 
 import SideNav from "./components/Partial/SideNav";
 import TopNav from "./components/Partial/TopNav";
@@ -25,6 +26,7 @@ function App() {
         <Router>
           <TopNav/>
           <SideNav/>
+          <MessageContextProvider>
           <main>
             <Switch>
               <Route path="/" exact component={Login}/>
@@ -41,6 +43,7 @@ function App() {
               <Route path="/logout" exact component={Logout}/>
             </Switch>
           </main>
+          </MessageContextProvider>
         </Router>
       </div>
     </ApolloProvider>

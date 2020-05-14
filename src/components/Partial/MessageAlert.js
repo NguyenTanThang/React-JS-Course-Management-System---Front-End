@@ -1,16 +1,29 @@
-import React, {useState} from 'react';
-import { UncontrolledAlert } from 'reactstrap';
+import React, {useContext} from 'react';
+import { UncontrolledAlert, Modal, ModalFooter, ModalBody, ModalHeader, Button } from 'reactstrap';
+import {MessageContext} from "../../context/MessageContext";
 
 const MessageAlert = (props) => {
-    const message = props.message;
-    const messageType = props.messageType;
+    const {message, messageType, visible, setVisible} = useContext(MessageContext)
+    const theMessage = message;
 
     if (!message) return <></>
 
+    const toggle = () => {
+      setVisible(false);
+    }
+
   return (
-    <UncontrolledAlert color={messageType}>
-      {message}
-    </UncontrolledAlert >
+    <Modal isOpen={visible} toggle={toggle}>
+      <ModalHeader toggle={toggle}></ModalHeader>
+        <ModalBody>
+          <UncontrolledAlert color={messageType}>
+            {theMessage}
+          </UncontrolledAlert>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={toggle}>Cancel</Button>
+        </ModalFooter>
+    </Modal>
   );
 }
 

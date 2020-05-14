@@ -1,12 +1,14 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import {ADD_TOPIC, GET_COURSES, GET_TOPICS} from "../../queries/queries";
+import {MessageContext} from "../../context/MessageContext";
+import MessageAlert from "../Partial/MessageAlert";
 
 const AddTopic = (props) => {
-
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const [title, setTitle] = useState("");
     const [courseID, setCourseID] = useState("");
     const courseQueryObject = useQuery(GET_COURSES);
@@ -30,10 +32,14 @@ const AddTopic = (props) => {
 
   const toggle = () => setModal(!modal);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    addTopic({ variables: { title, courseID } });
+    await addTopic({ variables: { title, courseID } });
     setTitle("");
+    setMessage("Successfully created");
+    setMessageType("success");
+    setVisible(true);
+    //window.location.reload();
   }
 
   const displayCourseOptions = (e) => {
@@ -56,6 +62,7 @@ const AddTopic = (props) => {
         <ModalBody>
         
             <Form onSubmit={onSubmit}>
+                <MessageAlert/>
 
                 <FormGroup>
                     <Label htmlFor="title">Topic Title:</Label>

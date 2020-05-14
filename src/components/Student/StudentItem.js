@@ -1,31 +1,13 @@
 import React from 'react';
 import {dateParserWithMonth_ISODate} from "../../utils/dateParser";
-import {DELETE_STUDENT, GET_STUDENTS} from "../../queries/queries";
-import { useMutation } from '@apollo/react-hooks';
-import { Button } from "reactstrap";
 import EditStudent from "./EditStudent";
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
+import DeleteStudent from "./DeleteStudent";
 
 function StudentItem(props) {
     const {studentItem} = props;
-    const {name, dob, address, phone_number, created_date, id, user} = studentItem;
+    const {name, dob, phone_number, id, user} = studentItem;
     const {email} = user;
-
-    const [deleteStudent, { data }] = useMutation(DELETE_STUDENT, {
-        update(cache, { data: { deleteStudent } }) {
-          const { students } = cache.readQuery({ query: GET_STUDENTS })
-          cache.writeQuery({
-            query: GET_STUDENTS,
-            data: { students: students.filter(item => {
-                return item.id !== deleteStudent.id
-            }) },
-          });
-        }
-      });
-
-      const onDelete = () => {
-        deleteStudent({ variables: { studentID: id } })
-      }
 
     return (
         <tr>
@@ -36,7 +18,7 @@ function StudentItem(props) {
             {/*<td>{dateParserWithMonth(created_date)}</td>*/}
             <td className="utils">
                 <EditStudent studentItem={studentItem}/>
-                <Button onClick={onDelete} color="danger">Delete</Button>
+                <DeleteStudent studentID={id}/>
             </td>
         </tr>
     )

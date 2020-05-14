@@ -10,7 +10,7 @@ const TopNav = (props) => {
   return (
       <Navbar color="light" light expand="md">
         <Container>
-            <NavbarBrand><Link to="/">Course Management System</Link></NavbarBrand>
+            <Link to="/" className="navbar-brand">Course Management System</Link>
             <div className="nav-btn">
                 <i className="fas fa-bars fa-2x" aria-hidden="true"></i>
             </div>

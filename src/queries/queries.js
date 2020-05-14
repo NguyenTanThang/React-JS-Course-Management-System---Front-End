@@ -48,6 +48,7 @@ query {
     created_date
     courseID
     course {
+      id
       name
     }
   }
@@ -57,14 +58,15 @@ query {
 export const ADD_TOPIC = gql `
 mutation ($title: String!, $courseID: ID!){
     addTopic(title: $title, courseID: $courseID){
+      id
+      title
+      created_date
+      courseID
+      course {
         id
-        title
-        created_date
-        courseID
-        course {
-          name
-        }
+        name
       }
+    }
 }
 `;
 
@@ -84,6 +86,7 @@ mutation ($topicID: ID!, $title: String, $courseID: ID){
       created_date
       courseID
       course {
+        id
         name
       }
     }

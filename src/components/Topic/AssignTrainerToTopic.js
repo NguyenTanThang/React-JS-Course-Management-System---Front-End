@@ -1,11 +1,14 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import {GET_COURSES, GET_TOPICS, GET_TRAINERS, ASSIGN_TRAINER_TO_TOPIC} from "../../queries/queries";
+import {GET_COURSES, GET_TOPICS, GET_TRAINERS, ASSIGN_TRAINER_TO_TOPIC, GET_TOPIC_BY_ID} from "../../queries/queries";
+import {MessageContext} from "../../context/MessageContext";
+import MessageAlert from "../Partial/MessageAlert";
 
 const AssignTrainerToTopic = (props) => {
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const courseData = useQuery(GET_COURSES)
     const trainerData = useQuery(GET_TRAINERS)
     const topicData = useQuery(GET_TOPICS)
@@ -19,7 +22,7 @@ const AssignTrainerToTopic = (props) => {
                     return assignTrainerToTopic;
                 } 
                 return item;
-            }) },
+              }) },
             });
           }
     })
@@ -98,12 +101,18 @@ const AssignTrainerToTopic = (props) => {
         })
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    assignTrainerToTopic({variables: {topicID, trainerID}})
+    await assignTrainerToTopic({variables: {topicID, trainerID}})
     setTrainerID("");
     setCourseID("");
     setTopicID("");
+    setMessage("Successfully assigned");
+    setMessageType("success");
+    setVisible(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000)
   }
 
   return (
@@ -114,6 +123,8 @@ const AssignTrainerToTopic = (props) => {
         <ModalBody>
         
             <Form onSubmit={onSubmit}>
+
+            <MessageAlert/>
 
             <FormGroup>
                 <Label htmlFor="trainerID">Trainer:</Label>

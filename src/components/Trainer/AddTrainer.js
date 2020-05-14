@@ -1,11 +1,14 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMutation } from '@apollo/react-hooks';
 import {ADD_TRAINER, GET_TRAINERS} from "../../queries/queries";
+import {MessageContext} from "../../context/MessageContext";
+import MessageAlert from "../Partial/MessageAlert";
 
 const AddTrainer = (props) => {
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,11 +35,13 @@ const AddTrainer = (props) => {
 
   const toggle = () => setModal(!modal);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    addTrainer({ variables: { name, email, address, password, dob, phone_number, topicsIDs, profession } });
+    await addTrainer({ variables: { name, email, address, password, dob, phone_number, topicsIDs, profession } });
     resetValue();
-    setModal(false);
+    setMessage("Successfully created");
+    setMessageType("success");
+    setVisible(true);
   }
 
   const resetValue = () => {
@@ -58,6 +63,8 @@ const AddTrainer = (props) => {
         <ModalBody>
         
             <Form onSubmit={onSubmit}>
+
+                <MessageAlert/>
 
                 <FormGroup>
                     <Label htmlFor="name">Name:</Label>

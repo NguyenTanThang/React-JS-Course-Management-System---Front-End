@@ -1,14 +1,17 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMutation } from '@apollo/react-hooks';
 import {ADD_COURSE, GET_COURSES} from "../../queries/queries";
+import {MessageContext} from "../../context/MessageContext";
+import MessageAlert from "../Partial/MessageAlert";
 
 const AddCourse = (props) => {
-  const {
-    className
-  } = props;
+    const {
+      className
+    } = props;
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const [name, setName] = useState("");
     const [addCourse, { data }] = useMutation(ADD_COURSE, {
         update(cache, { data: { addCourse } }) {
@@ -29,6 +32,9 @@ const AddCourse = (props) => {
     e.preventDefault();
     await addCourse({ variables: { name } });
     setName("");
+    setMessage("Successfully created");
+    setMessageType("success");
+    setVisible(true);
   }
 
   return (
@@ -39,6 +45,7 @@ const AddCourse = (props) => {
         <ModalBody>
         
             <Form onSubmit={onSubmit}>
+                <MessageAlert/>
 
                 <FormGroup>
                     <Label htmlFor="name">Course Name:</Label>

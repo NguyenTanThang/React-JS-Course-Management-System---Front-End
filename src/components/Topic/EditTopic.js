@@ -1,17 +1,19 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import {UPDATE_TOPIC, GET_COURSES, GET_TOPICS} from "../../queries/queries";
+import {MessageContext} from "../../context/MessageContext";
+import MessageAlert from "../Partial/MessageAlert";
 
 const EditTopic = (props) => {
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const {topicItem} = props
     const [title, setTitle] = useState(topicItem.title);
     const [courseID, setCourseID] = useState(topicItem.courseID);
     const courseQueryObject = useQuery(GET_COURSES);
     let {loading, error} = courseQueryObject;
-    let courseData = courseQueryObject.data;
     const [updateTopic, { data }] = useMutation(UPDATE_TOPIC, {
         update(cache, { data: { updateTopic } }) {
           const { topics } = cache.readQuery({ query: GET_TOPICS })
@@ -35,10 +37,12 @@ const EditTopic = (props) => {
 
   const toggle = () => setModal(!modal);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    updateTopic({ variables: { topicID: topicItem.id, title, courseID } });
-    setModal(false);
+    await updateTopic({ variables: { topicID: topicItem.id, title, courseID } });
+    setMessage("Successfully updated");
+    setMessageType("success");
+    setVisible(true);
   }
 
   const displayCourseOptions = (e) => {
@@ -47,6 +51,7 @@ const EditTopic = (props) => {
     } else if (error) {
         return <option>Error</option>
     } else {
+        let courseData = courseQueryObject.data;
         return courseData.courses.map(item => {
             return <option value={item.id}>{item.name}</option>
         })
@@ -61,6 +66,8 @@ const EditTopic = (props) => {
         <ModalBody>
         
             <Form onSubmit={onSubmit}>
+
+                <MessageAlert/>
 
                 <FormGroup>
                     <Label htmlFor="title">Topic Title:</Label>

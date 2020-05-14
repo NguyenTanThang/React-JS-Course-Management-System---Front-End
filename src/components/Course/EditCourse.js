@@ -1,13 +1,16 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMutation } from '@apollo/react-hooks';
 import {UPDATE_COURSE, GET_COURSES} from "../../queries/queries";
+import {MessageContext} from "../../context/MessageContext";
+import MessageAlert from "../Partial/MessageAlert";
 
 const EditCourse = (props) => {
     const {courseItem} = props;
     const [name, setName] = useState(courseItem.name);
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const [updateCourse, { data }] = useMutation(UPDATE_COURSE, {
         update(cache, { data: { updateCourse } }) {
           const { courses } = cache.readQuery({ query: GET_COURSES })
@@ -34,7 +37,9 @@ const EditCourse = (props) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     await updateCourse({ variables: { name, courseID: courseItem.id } });
-    setModal(false);
+    setMessage("Successfully updated");
+    setMessageType("success");
+    setVisible(true);
   }
 
   return (
@@ -45,6 +50,8 @@ const EditCourse = (props) => {
         <ModalBody>
         
             <Form onSubmit={onSubmit}>
+
+                <MessageAlert/>
 
                 <FormGroup>
                     <Label htmlFor="name">Course Name:</Label>

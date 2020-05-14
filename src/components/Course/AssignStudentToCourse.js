@@ -1,13 +1,16 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import {GET_STUDENTS, GET_COURSES, ASSIGN_STUDENT_TO_COURSE} from "../../queries/queries";
+import {MessageContext} from "../../context/MessageContext";
+import MessageAlert from "../Partial/MessageAlert";
 
 const AssignStudentToCourse = (props) => {
     const courseData = useQuery(GET_COURSES)
     const studentData = useQuery(GET_STUDENTS)
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const [assignStudentToCourse, assignData] = useMutation(ASSIGN_STUDENT_TO_COURSE, {
       update(cache, { data: { assignStudentToCourse } }) {
         const { students } = cache.readQuery({ query: GET_STUDENTS })
@@ -87,6 +90,12 @@ const AssignStudentToCourse = (props) => {
     await assignStudentToCourse({variables: {courseID, studentID}})
     setCourseID("");
     setStudentID("");
+    setMessage("Successfully assigned");
+    setMessageType("success");
+    setVisible(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000)
   }
 
   return (
@@ -97,6 +106,7 @@ const AssignStudentToCourse = (props) => {
         <ModalBody>
         
             <Form onSubmit={onSubmit}>
+            <MessageAlert/>
 
             <FormGroup>
               <Label htmlFor="studentID">Student:</Label>

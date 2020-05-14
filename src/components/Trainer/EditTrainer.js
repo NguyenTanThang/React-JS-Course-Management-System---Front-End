@@ -1,9 +1,11 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMutation } from '@apollo/react-hooks';
 import {UPDATE_TRAINER, GET_TRAINERS} from "../../queries/queries";
+import {MessageContext} from "../../context/MessageContext";
+import MessageAlert from "../Partial/MessageAlert";
 
 const EditTrainer = (props) => {
     const {
@@ -11,6 +13,7 @@ const EditTrainer = (props) => {
         trainerItem
       } = props;
 
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const [name, setName] = useState(trainerItem.name);
     const [address, setAddress] = useState(trainerItem.address);
     const [phone_number, setPhoneNumber] = useState(trainerItem.phone_number);
@@ -36,10 +39,19 @@ const EditTrainer = (props) => {
 
   const toggle = () => setModal(!modal);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    updateTrainer({ variables: { trainerID: trainerItem.id, name, address, dob, phone_number, topicsIDs, profession } });
-    setModal(false);
+    await updateTrainer({ variables: { trainerID: trainerItem.id, name, address, dob, phone_number, topicsIDs, profession } });
+    const url = window.location.href;
+    if (url.includes("profile")){
+      setMessage("Successfully updated. Please reload to take effect");
+      setMessageType("success");
+      setVisible(true);
+    } else {
+      setMessage("Successfully updated");
+      setMessageType("success");
+      setVisible(true);
+    }
   }
 
   return (
@@ -50,6 +62,8 @@ const EditTrainer = (props) => {
         <ModalBody>
         
             <Form onSubmit={onSubmit}>
+
+                <MessageAlert/>
 
                 <FormGroup>
                     <Label htmlFor="name">Name:</Label>

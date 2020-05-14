@@ -1,11 +1,14 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMutation } from '@apollo/react-hooks';
 import {ADD_STUDENT, GET_STUDENTS} from "../../queries/queries";
+import {MessageContext} from "../../context/MessageContext";
+import MessageAlert from "../Partial/MessageAlert";
 
 const AddStudent = (props) => {
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -31,11 +34,13 @@ const AddStudent = (props) => {
 
   const toggle = () => setModal(!modal);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    addStudent({ variables: { name, email, address, password, dob, phone_number, coursesIDs } });
+    await addStudent({ variables: { name, email, address, password, dob, phone_number, coursesIDs } });
     resetValue();
-    setModal(false);
+    setMessage("Successfully created");
+    setMessageType("success");
+    setVisible(true);
   }
 
   const resetValue = () => {
@@ -56,6 +61,8 @@ const AddStudent = (props) => {
         <ModalBody>
         
             <Form onSubmit={onSubmit}>
+
+                <MessageAlert/>
 
                 <FormGroup>
                     <Label htmlFor="name">Name:</Label>
