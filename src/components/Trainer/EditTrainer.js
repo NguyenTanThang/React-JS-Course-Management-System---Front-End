@@ -14,6 +14,7 @@ const EditTrainer = (props) => {
       } = props;
 
     const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     const [name, setName] = useState(trainerItem.name);
     const [address, setAddress] = useState(trainerItem.address);
     const [phone_number, setPhoneNumber] = useState(trainerItem.phone_number);
@@ -41,6 +42,7 @@ const EditTrainer = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
     await updateTrainer({ variables: { trainerID: trainerItem.id, name, address, dob, phone_number, topicsIDs, profession } });
     const url = window.location.href;
     if (url.includes("profile")){
@@ -52,6 +54,7 @@ const EditTrainer = (props) => {
       setMessageType("success");
       setVisible(true);
     }
+    setButtonDisabled(false);
   }
 
   return (
@@ -102,7 +105,7 @@ const EditTrainer = (props) => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Button color="dark" block type="submit">Update</Button>
+                    <Button color="dark" block type="submit" disabled={buttonDisabled}>Update</Button>
                 </FormGroup>
 
             </Form>

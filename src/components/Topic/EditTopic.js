@@ -9,6 +9,7 @@ import MessageAlert from "../Partial/MessageAlert";
 
 const EditTopic = (props) => {
     const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     const {topicItem} = props
     const [title, setTitle] = useState(topicItem.title);
     const [courseID, setCourseID] = useState(topicItem.courseID);
@@ -39,10 +40,12 @@ const EditTopic = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
     await updateTopic({ variables: { topicID: topicItem.id, title, courseID } });
     setMessage("Successfully updated");
     setMessageType("success");
     setVisible(true);
+    setButtonDisabled(false);
   }
 
   const displayCourseOptions = (e) => {
@@ -87,7 +90,7 @@ const EditTopic = (props) => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Button color="dark" block type="submit">Update</Button>
+                    <Button color="dark" block type="submit" disabled={buttonDisabled}>Update</Button>
                 </FormGroup>
 
             </Form>

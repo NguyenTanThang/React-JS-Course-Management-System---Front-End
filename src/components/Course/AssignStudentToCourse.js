@@ -10,6 +10,7 @@ import MessageAlert from "../Partial/MessageAlert";
 const AssignStudentToCourse = (props) => {
     const courseData = useQuery(GET_COURSES)
     const studentData = useQuery(GET_STUDENTS)
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const [assignStudentToCourse, assignData] = useMutation(ASSIGN_STUDENT_TO_COURSE, {
       update(cache, { data: { assignStudentToCourse } }) {
@@ -87,12 +88,14 @@ const AssignStudentToCourse = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
     await assignStudentToCourse({variables: {courseID, studentID}})
     setCourseID("");
     setStudentID("");
     setMessage("Successfully assigned");
     setMessageType("success");
     setVisible(true);
+    setButtonDisabled(false);
     setTimeout(() => {
       window.location.reload();
     }, 1000)
@@ -129,7 +132,7 @@ const AssignStudentToCourse = (props) => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Button color="dark" block type="submit">Assign</Button>
+                    <Button color="dark" block type="submit" disabled={buttonDisabled}>Assign</Button>
                 </FormGroup>
 
             </Form>

@@ -11,13 +11,14 @@ const EditCourse = (props) => {
     const {courseItem} = props;
     const [name, setName] = useState(courseItem.name);
     const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     const [updateCourse, { data }] = useMutation(UPDATE_COURSE, {
         update(cache, { data: { updateCourse } }) {
           const { courses } = cache.readQuery({ query: GET_COURSES })
           cache.writeQuery({
             query: GET_COURSES,
             data: { courses: courses.map(item => {
-                if (item.id == updateCourse.id) {
+                if (item.id === updateCourse.id) {
                     return updateCourse;
                 } 
                 return item;
@@ -36,10 +37,12 @@ const EditCourse = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
     await updateCourse({ variables: { name, courseID: courseItem.id } });
     setMessage("Successfully updated");
     setMessageType("success");
     setVisible(true);
+    setButtonDisabled(false);
   }
 
   return (
@@ -61,7 +64,7 @@ const EditCourse = (props) => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Button color="dark" block type="submit">Update</Button>
+                    <Button color="dark" block type="submit" disabled={buttonDisabled}>Update</Button>
                 </FormGroup>
 
             </Form>

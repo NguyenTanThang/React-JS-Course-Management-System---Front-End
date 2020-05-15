@@ -9,6 +9,7 @@ import MessageAlert from "../Partial/MessageAlert";
 
 const AddStudent = (props) => {
     const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -36,11 +37,13 @@ const AddStudent = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
     await addStudent({ variables: { name, email, address, password, dob, phone_number, coursesIDs } });
     resetValue();
     setMessage("Successfully created");
     setMessageType("success");
     setVisible(true);
+    setButtonDisabled(false);
   }
 
   const resetValue = () => {
@@ -108,7 +111,7 @@ const AddStudent = (props) => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Button color="dark" block type="submit">Create</Button>
+                    <Button color="dark" block type="submit" disabled={buttonDisabled}>Create</Button>
                 </FormGroup>
 
             </Form>

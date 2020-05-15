@@ -9,6 +9,7 @@ import MessageAlert from "../Partial/MessageAlert";
 
 const AddTopic = (props) => {
     const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     const [title, setTitle] = useState("");
     const [courseID, setCourseID] = useState("");
     const courseQueryObject = useQuery(GET_COURSES);
@@ -34,11 +35,13 @@ const AddTopic = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
     await addTopic({ variables: { title, courseID } });
     setTitle("");
     setMessage("Successfully created");
     setMessageType("success");
     setVisible(true);
+    setButtonDisabled(false);
     //window.location.reload();
   }
 
@@ -82,7 +85,7 @@ const AddTopic = (props) => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Button color="dark" block type="submit">Create</Button>
+                    <Button color="dark" block type="submit" disabled={buttonDisabled}>Create</Button>
                 </FormGroup>
 
             </Form>

@@ -9,6 +9,7 @@ import MessageAlert from "../Partial/MessageAlert";
 
 const AssignTrainerToTopic = (props) => {
     const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     const courseData = useQuery(GET_COURSES)
     const trainerData = useQuery(GET_TRAINERS)
     const topicData = useQuery(GET_TOPICS)
@@ -103,6 +104,7 @@ const AssignTrainerToTopic = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setButtonDisabled(true);
     await assignTrainerToTopic({variables: {topicID, trainerID}})
     setTrainerID("");
     setCourseID("");
@@ -110,6 +112,7 @@ const AssignTrainerToTopic = (props) => {
     setMessage("Successfully assigned");
     setMessageType("success");
     setVisible(true);
+    setButtonDisabled(false);
     setTimeout(() => {
       window.location.reload();
     }, 1000)
@@ -157,7 +160,7 @@ const AssignTrainerToTopic = (props) => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Button color="dark" block type="submit">Assign</Button>
+                    <Button color="dark" block type="submit" disabled={buttonDisabled}>Assign</Button>
                 </FormGroup>
 
             </Form>
