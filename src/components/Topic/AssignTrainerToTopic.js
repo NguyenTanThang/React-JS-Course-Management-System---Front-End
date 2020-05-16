@@ -131,7 +131,7 @@ const AssignTrainerToTopic = (props) => {
 
             <FormGroup>
                 <Label htmlFor="trainerID">Trainer:</Label>
-                <select className="custom-select" id="trainerID" name="trainerID" defaultValue={""} value={trainerID} onChange={(e) => {
+                <select className="custom-select" id="trainerID" name="trainerID" required defaultValue={""} value={trainerID} onChange={(e) => {
                 setTrainerID(e.target.value)
                 }}>
                 <option value={""} disabled>--Trainer--</option>
@@ -141,7 +141,7 @@ const AssignTrainerToTopic = (props) => {
 
                 <FormGroup>
                     <Label htmlFor="courseID">Course:</Label>
-                    <select className="custom-select" id="courseID" name="courseID" defaultValue={""} value={courseID} onChange={(e) => {
+                    <select required className="custom-select" id="courseID" name="courseID" defaultValue={""} value={courseID} onChange={(e) => {
                       setCourseID(e.target.value)
                     }}>
                       <option value={""} disabled>--Course--</option>
@@ -151,7 +151,7 @@ const AssignTrainerToTopic = (props) => {
 
                 <FormGroup>
                     <Label htmlFor="topicID">Topic:</Label>
-                    <select className="custom-select" id="topicID" name="topicID" defaultValue={""} value={topicID} onChange={(e) => {
+                    <select required className="custom-select" id="topicID" name="topicID" defaultValue={""} value={topicID} onChange={(e) => {
                       setTopicID(e.target.value)
                     }}>
                       <option value={""} disabled>--Topic--</option>

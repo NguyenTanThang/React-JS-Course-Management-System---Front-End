@@ -113,7 +113,7 @@ const AssignStudentToCourse = (props) => {
 
             <FormGroup>
               <Label htmlFor="studentID">Student:</Label>
-              <select className="custom-select" id="studentID" name="studentID" defaultValue={""} value={studentID} onChange={(e) => {
+              <select required className="custom-select" id="studentID" name="studentID" defaultValue={""} value={studentID} onChange={(e) => {
                 setStudentID(e.target.value)
               }}>
                 <option value={""} disabled>--Student--</option>
@@ -123,7 +123,7 @@ const AssignStudentToCourse = (props) => {
 
                 <FormGroup>
                     <Label htmlFor="courseID">Course:</Label>
-                    <select className="custom-select" id="courseID" name="courseID" defaultValue={""} value={courseID} onChange={(e) => {
+                    <select required className="custom-select" id="courseID" name="courseID" defaultValue={""} value={courseID} onChange={(e) => {
                       setCourseID(e.target.value)
                     }}>
                       <option value={""} disabled>--Course--</option>

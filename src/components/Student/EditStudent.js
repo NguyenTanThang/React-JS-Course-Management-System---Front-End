@@ -90,7 +90,7 @@ const EditStudent = (props) => {
 
                 <FormGroup>
                     <Label htmlFor="address">Address:</Label>
-                    <textarea id="address" name="address" className="form-control" rows="5" placeholder="Address" value={address} onChange={e => {
+                    <textarea id="address" name="address" className="form-control" rows="5" placeholder="Address" required value={address} onChange={e => {
                         setAddress(e.target.value)
                     }}>
                     </textarea>
