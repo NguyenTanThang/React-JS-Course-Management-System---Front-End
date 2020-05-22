@@ -53,7 +53,7 @@ const DeleteTrainer = (props) => {
                 <p>{name}</p>
             </div>
             <div className="col-lg-6 col-md-6 col-sm-6 details-title">
-                <p><b>Courses:</b></p>
+                <p><b>Topics:</b></p>
             </div>
             <div className="col-lg-6 col-md-6 col-sm-6 details-data">
                 <ul>

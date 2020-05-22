@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {useMutation} from "@apollo/react-hooks";
 import {LOGIN} from "../../queries/queries";
-import {Form, FormGroup, Input, Button, Label, Container} from "reactstrap"
+import {Form, FormGroup, Input, Button, Label, Container} from "reactstrap";
+import {MessageContext} from "../../context/MessageContext";
+import {filterGraphQLString} from "../../utils/graphQLErrorSorter";
+import MessageAlert from "../Partial/MessageAlert";
 
 function Login(props) {
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const userID = localStorage.getItem("userID");
     if (userID){
         props.history.push("/profile");
@@ -14,13 +18,19 @@ function Login(props) {
     const [login, { data }] = useMutation(LOGIN);
 
     const onSubmit = async (e) => {
-        e.preventDefault();
-        const loginData = await login({ variables: { email, password } });
-        console.log(loginData)
-        if (loginData.data.login.id){
-            localStorage.setItem("userID", loginData.data.login.id);
-            props.history.push("/profile");
-            window.location.reload();
+        try {
+            e.preventDefault();
+            const loginData = await login({ variables: { email, password } });
+            console.log(loginData)
+            if (loginData.data.login.id){
+                localStorage.setItem("userID", loginData.data.login.id);
+                props.history.push("/profile");
+                window.location.reload();
+            }
+        } catch (error) {
+            setMessage(filterGraphQLString(error.message));
+            setMessageType("danger");
+            setVisible(true);
         }
     }
 
@@ -30,6 +40,8 @@ function Login(props) {
                 <h2 className="box-title">Login</h2>
                 <div className="box-content">
                     <Form onSubmit={onSubmit}>
+
+                        <MessageAlert/>
 
                         <FormGroup>
                             <Label htmlFor="email">Email:</Label>

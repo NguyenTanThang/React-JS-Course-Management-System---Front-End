@@ -37,7 +37,7 @@ function TrainerListSearchEngine(props) {
                     <Form onSubmit={(e) => e.preventDefault()}>
 
                         <FormGroup>
-                            <Label htmlFor="searched-name">Student Name</Label>
+                            <Label htmlFor="searched-name">Trainer Name</Label>
                             <Input type="text" id="searched-name" name="searched-name" value={searchedName} onChange={(e) => {
                                 setSearchedName(e.target.value)
                             }}/>

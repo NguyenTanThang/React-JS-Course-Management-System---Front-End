@@ -1,21 +1,32 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {useMutation} from "@apollo/react-hooks";
 import {CHANGE_PASWORD} from "../../queries/queries";
 import {Form, FormGroup, Input, Button, Label, Container} from "reactstrap";
 import {Link} from "react-router-dom";
+import {MessageContext} from "../../context/MessageContext";
+import {filterGraphQLString} from "../../utils/graphQLErrorSorter";
+import MessageAlert from "../Partial/MessageAlert";
 
 function ChangePassword(props) {
+    const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [change_password, { data }] = useMutation(CHANGE_PASWORD);
 
     const onSubmit = async (e) => {
-        e.preventDefault();
-        const userID = localStorage.getItem("userID");
-        change_password({
-            variables: {userID, oldPassword, newPassword}
-        })
-        props.history.push("/logout");
+        try {
+            e.preventDefault();
+            const userID = localStorage.getItem("userID");
+            await change_password({
+                variables: {userID, oldPassword, newPassword}
+            })
+            props.history.push("/logout");
+        } 
+        catch (error) {
+            setMessage(filterGraphQLString(error.message));
+            setMessageType("danger");
+            setVisible(true);
+        }
     }
 
     return (
@@ -24,6 +35,8 @@ function ChangePassword(props) {
                 <h2 className="box-title">Change Password</h2>
                 <div className="box-content">
                     <Form onSubmit={onSubmit}>
+
+                        <MessageAlert/>
 
                         <FormGroup>
                             <Label htmlFor="oldPassword">Old Password:</Label>
