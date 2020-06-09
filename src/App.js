@@ -7,6 +7,7 @@ import MessageContextProvider from "./context/MessageContext";
 import SideNav from "./components/Partial/SideNav";
 import TopNav from "./components/Partial/TopNav";
 import Login from "./components/User/Login";
+import Signup from "./components/User/Signup";
 import Profile from "./components/User/Profile";
 import CourseList from "./components/Course/CourseList";
 import CourseDetails from "./components/Course/CourseDetails";
@@ -41,6 +42,7 @@ function App() {
               <Route path="/trainers" exact component={TrainerList}/>
               <Route path="/change-password" exact component={ChangePassword}/>
               <Route path="/logout" exact component={Logout}/>
+              <Route path="/signup" exact component={Signup}/>
             </Switch>
           </main>
           </MessageContextProvider>

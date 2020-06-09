@@ -20,6 +20,11 @@ function SideNav() {
                         Login
                     </Link>
                 </li>
+                <li>
+                    <Link to="/signup">
+                        Signup
+                    </Link>
+                </li>
             </>
         )
 
@@ -80,6 +85,11 @@ function SideNav() {
                     <li>
                         <Link to="/">
                             Login
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/signup">
+                            Signup
                         </Link>
                     </li>
                 </>

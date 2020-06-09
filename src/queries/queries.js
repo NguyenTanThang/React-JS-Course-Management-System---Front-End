@@ -297,6 +297,21 @@ mutation ($email: String!, $password: String!){
 }
 `
 
+export const SIGNUP = gql `
+mutation ($username: String!, $email: String!, $password: String!){
+  signup (username: $username, email: $email, password: $password){
+		id
+    role
+    student {
+      name
+    }
+    trainer {
+      name
+    }
+  }
+}
+`
+
 export const GET_USER_BY_ID = gql`
 query ($userID: ID!){
   getUserByID(userID: $userID) {

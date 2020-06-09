@@ -1,12 +1,12 @@
 import React, {useState, useContext} from 'react';
 import {useMutation} from "@apollo/react-hooks";
-import {LOGIN} from "../../queries/queries";
+import {SIGNUP} from "../../queries/queries";
 import {Form, FormGroup, Input, Button, Label, Container} from "reactstrap";
 import {MessageContext} from "../../context/MessageContext";
 import {filterGraphQLString} from "../../utils/graphQLErrorSorter";
 import MessageAlert from "../Partial/MessageAlert";
 
-function Login(props) {
+function Signup(props) {
     const {setMessage, setMessageType, setVisible} = useContext(MessageContext);
     const userID = localStorage.getItem("userID");
     if (userID){
@@ -14,16 +14,17 @@ function Login(props) {
         window.location.reload();
     }
     const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [login, { data }] = useMutation(LOGIN);
+    const [signup, { data }] = useMutation(SIGNUP);
 
     const onSubmit = async (e) => {
         try {
             e.preventDefault();
-            const loginData = await login({ variables: { email, password } });
-            console.log(loginData)
-            if (loginData.data.login.id){
-                localStorage.setItem("userID", loginData.data.login.id);
+            const signupData = await signup({ variables: { username, email, password } });
+            console.log(signupData)
+            if (signupData.data.signup.id){
+                localStorage.setItem("userID", signupData.data.signup.id);
                 props.history.push("/profile");
                 window.location.reload();
             }
@@ -44,6 +45,13 @@ function Login(props) {
                         <MessageAlert/>
 
                         <FormGroup>
+                            <Label htmlFor="username">Username:</Label>
+                            <Input type="username" placeholder="Username" id="username" name="username" required value={username} onChange={e => {
+                                setUsername(e.target.value)
+                            }}/>
+                        </FormGroup>
+
+                        <FormGroup>
                             <Label htmlFor="email">Email:</Label>
                             <Input type="email" placeholder="Email" id="email" name="email" required value={email} onChange={e => {
                                 setEmail(e.target.value)
@@ -58,7 +66,7 @@ function Login(props) {
                         </FormGroup>
 
                         <FormGroup>
-                            <Button color="dark" block type="submit">Login</Button>
+                            <Button color="dark" block type="submit">Signup</Button>
                         </FormGroup>
 
                     </Form>
@@ -68,4 +76,4 @@ function Login(props) {
     )
 }
 
-export default Login
+export default Signup
